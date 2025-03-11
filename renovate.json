@@ -7,8 +7,7 @@
   "packageRules": [
     {
       "matchPackageNames": ["go", "golang"],
-      "matchDepTypes": ["toolchain", "image", "stage"],
-      "groupName": "golang"
+      "groupName": "golang {{ newVersion }}"
     }
   ]
 }
