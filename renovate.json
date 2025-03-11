@@ -7,7 +7,7 @@
   "packageRules": [
     {
       "matchPackageNames": ["go", "golang"],
-      "groupName": "golang {{ newVersion }}"
+      "groupName": "golang"
     }
   ]
 }
