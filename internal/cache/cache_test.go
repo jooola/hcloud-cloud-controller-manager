@@ -39,6 +39,18 @@ func newTestCache(mode Mode) *Cache[hcloud.Server] {
 	)
 }
 
+func assertCacheHasServer(t *testing.T, cache *Cache[hcloud.Server], value *hcloud.Server) {
+	t.Helper()
+	assert.Equal(t, value, cache.byID[value.ID].value)
+	assert.Equal(t, value, cache.byName[value.Name].value)
+}
+
+func assertCacheLen(t *testing.T, cache *Cache[hcloud.Server], length int) {
+	t.Helper()
+	assert.Len(t, cache.byID, length)
+	assert.Len(t, cache.byName, length)
+}
+
 type testClient struct {
 	t         *testing.T
 	callCount int
@@ -50,6 +62,14 @@ func newTestClient(t *testing.T) *testClient {
 
 func (c *testClient) CallCount() int {
 	return c.callCount
+}
+
+func (c *testClient) AssertCallCount(expected int) {
+	c.t.Helper()
+	require.Equal(c.t, expected, c.callCount, "expected call count to be %d, got %d", expected, c.callCount)
+
+	// /!\ Reset call count until next assertion
+	c.callCount = 0
 }
 
 func (c *testClient) FetchAllFunc(servers []*hcloud.Server, err error) func(context.Context) ([]*hcloud.Server, error) {
